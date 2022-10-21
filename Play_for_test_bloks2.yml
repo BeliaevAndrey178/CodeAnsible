@@ -1,0 +1,25 @@
+---
+- name: Install Apache and Upload my Web Page to Nginx
+  hosts: all
+  become: true
+
+  tasks:
+      debug:
+          var: ansible_os_family
+  - block:
+      - yum:
+        name:
+           - httpd
+           - memcached
+       state: latest
+       become: true
+    when: ansible_os_family == "RedHat"
+
+  - block:
+      - apt:
+        name:
+          - apache2
+          - memcached
+       state: latest
+       become: true
+    when: ansible_os_family == "Debian"
