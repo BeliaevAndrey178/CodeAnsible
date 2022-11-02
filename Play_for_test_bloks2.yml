@@ -4,22 +4,20 @@
   become: true
 
   tasks:
-      debug:
-          var: ansible_os_family
-  - block:
-      - yum:
-        name:
-           - httpd
+    - name: Install, configure, and start Apache
+      block:
+       - name: Install httpd and memcached
+         apt:
+           name:
            - memcached
-       state: latest
-       become: true
-    when: ansible_os_family == "RedHat"
+           state: present
+      when: ansible_os_family == "Debian"
 
-  - block:
-      - apt:
-        name:
-          - apache2
-          - memcached
-       state: latest
-       become: true
-    when: ansible_os_family == "Debian"
+      #- block:
+      #- apt:
+      #  name:
+      #    - apache2
+      #    - memcached
+      # state: latest
+      # become: true
+      # when: ansible_os_family == "Debian"
